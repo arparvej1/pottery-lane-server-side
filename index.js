@@ -9,7 +9,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.MONGODB_API;
+const uri = `mongodb+srv://${process.env.MONGODB_TEN_USER}:${process.env.MONGODB_TEN_PASS}@cluster0.esbrpdb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
