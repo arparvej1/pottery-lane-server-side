@@ -23,9 +23,9 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    const userCollection = client.db('tenUsersDB').collection('users');
+    const userCollection = client.db('assignmentTenDB').collection('users');
 
-    // // --- send user
+    // --- send user
     app.get('/users', async (req, res) => {
       const cursor = userCollection.find()
       const result = await cursor.toArray();
@@ -37,6 +37,16 @@ async function run() {
       const user = req.body;
       console.log(user);
       const result = await userCollection.insertOne(user);
+      res.send(result);
+    });
+
+
+    const itemCollection = client.db('assignmentTenDB').collection('items');
+    // --- received art & craft from client
+    app.post('/add-art-craft', async (req, res) => {
+      const item = req.body;
+      console.log(item);
+      const result = await itemCollection.insertOne(item);
       res.send(result);
     });
 
