@@ -80,6 +80,31 @@ async function run() {
       res.send(result);
     })
 
+    // Update
+    app.put('/art-craft/:itemId', async (req, res) => {
+      const id = req.params.itemId;
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const updatedItem = req.body;
+
+      const item = {
+        $set: {
+          itemName: updatedItem.itemName,
+          subCategory: updatedItem.subCategory,
+          stockStatus: updatedItem.stockStatus,
+          price: updatedItem.price,
+          rating: updatedItem.rating,
+          photo: updatedItem.photo,
+          customization: updatedItem.customization,
+          processingTime: updatedItem.processingTime,
+          shortDescription: updatedItem.shortDescription
+        }
+      }
+      const result = await itemCollection.updateOne(filter, item, options);
+      res.send(result);
+    })
+
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
