@@ -72,12 +72,13 @@ async function run() {
       res.send(result);
     });
 
-    // --- send art & craft
-    app.get('/my-art-craft', async (req, res) => {
-      const cursor = itemCollection.find();
-      const result = await cursor.toArray();
+    // --- delete art & craft item
+    app.delete('/art-craft/:itemId', async (req, res) => {
+      const id = req.params.itemId;
+      const query = { _id: new ObjectId(id) }
+      const result = await itemCollection.deleteOne(query);
       res.send(result);
-    });
+    })
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
