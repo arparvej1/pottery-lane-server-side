@@ -3,7 +3,15 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
+const corsConfig = {
+  origin: '',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}
+app.use(cors(corsConfig))
+app.options("", cors(corsConfig))
 
 // middleware
 app.use(cors());
@@ -27,7 +35,7 @@ async function run() {
 
     // --- send user
     app.get('/users', async (req, res) => {
-      const cursor = userCollection.find()
+      const cursor = userCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
@@ -42,13 +50,21 @@ async function run() {
 
 
     const itemCollection = client.db('assignmentTenDB').collection('items');
+    // --- send art & craft
+    app.get('/art-craft', async (req, res) => {
+      const cursor = itemCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    
     // --- received art & craft from client
-    app.post('/add-art-craft', async (req, res) => {
+    app.post('/art-craft', async (req, res) => {
       const item = req.body;
       console.log(item);
       const result = await itemCollection.insertOne(item);
       res.send(result);
     });
+
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
