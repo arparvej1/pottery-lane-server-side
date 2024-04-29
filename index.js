@@ -48,7 +48,6 @@ async function run() {
       res.send(result);
     });
 
-
     const itemCollection = client.db('assignmentTenDB').collection('items');
     // --- send art & craft
     app.get('/art-craft', async (req, res) => {
@@ -78,7 +77,7 @@ async function run() {
       const query = { _id: new ObjectId(id) }
       const result = await itemCollection.deleteOne(query);
       res.send(result);
-    })
+    });
 
     // Update
     app.put('/art-craft/:itemId', async (req, res) => {
@@ -102,8 +101,26 @@ async function run() {
       }
       const result = await itemCollection.updateOne(filter, item, options);
       res.send(result);
-    })
+    });
 
+
+
+    const categoryCollection = client.db('assignmentTenDB').collection('category');
+
+    // --- send user
+    app.get('/category', async (req, res) => {
+      const cursor = categoryCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // --- received user from client
+    app.post('/category', async (req, res) => {
+      const category = req.body;
+      console.log(category);
+      const result = await categoryCollection.insertOne(category);
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
