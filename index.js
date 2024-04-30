@@ -122,6 +122,26 @@ async function run() {
       res.send(result);
     });
 
+
+
+
+    const reviewCollection = client.db('assignmentTenDB').collection('review');
+
+    // --- send user
+    app.get('/review', async (req, res) => {
+      const cursor = reviewCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // --- received user from client
+    app.post('/review', async (req, res) => {
+      const review = req.body;
+      console.log(review);
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
